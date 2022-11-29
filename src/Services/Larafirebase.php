@@ -102,7 +102,7 @@ class Larafirebase
         return $this;
     }
 
-    public function sendNotification($tokens)
+    public function sendNotification($tokens, $configKey = "authentication_key")
     {
         $fields = array(
             'registration_ids' => $this->validateToken($tokens),
@@ -118,10 +118,10 @@ class Larafirebase
             'priority' => $this->priority
         );
 
-        return $this->callApi($fields);
+        return $this->callApi($fields, $configKey);
     }
 
-    public function sendMessage($tokens)
+    public function sendMessage($tokens, $configKey = "authentication_key")
     {
         $data = ($this->fromArray) ? $this->fromArray : [
             'title' => $this->title,
@@ -135,18 +135,18 @@ class Larafirebase
             'data' => $data,
         );
 
-        return $this->callApi($fields);
+        return $this->callApi($fields, $configKey);
     }
 
-    public function send()
+    public function send($configKey = "authentication_key")
     {
-        return $this->callApi($this->fromRaw);
+        return $this->callApi($this->fromRaw, $configKey);
     }
 
-    private function callApi($fields): Response
+    private function callApi($fields, $configKey = "authentication_key"): Response
     {
         $response = Http::withHeaders([
-            'Authorization' => 'key=' . config('larafirebase.authentication_key')
+            'Authorization' => 'key=' . config("larafirebase.$configKey")
         ])->post(self::API_URI, $fields);
 
         return $response;

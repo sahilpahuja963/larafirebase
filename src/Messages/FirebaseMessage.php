@@ -89,10 +89,10 @@ class FirebaseMessage
         return $this;
     }
 
-    public function asNotification($deviceTokens)
+    public function asNotification($deviceTokens, $configKey = "authentication_key")
     {
         if ($this->fromArray) {
-            return Larafirebase::fromArray($this->fromArray)->sendNotification($deviceTokens);
+            return Larafirebase::fromArray($this->fromArray)->sendNotification($deviceTokens, $configKey);
         }
 
         return Larafirebase::withTitle($this->title)
@@ -103,18 +103,18 @@ class FirebaseMessage
             ->withSound($this->sound)
             ->withPriority($this->priority)
             ->withAdditionalData($this->additionalData)
-            ->sendNotification($deviceTokens);
+            ->sendNotification($deviceTokens, $configKey);
     }
 
-    public function asMessage($deviceTokens)
+    public function asMessage($deviceTokens, $configKey = "authentication_key")
     {
         if ($this->fromArray) {
-            return Larafirebase::fromArray($this->fromArray)->sendMessage($deviceTokens);
+            return Larafirebase::fromArray($this->fromArray)->sendMessage($deviceTokens, $configKey);
         }
 
         return Larafirebase::withTitle($this->title)
             ->withBody($this->body)
             ->withAdditionalData($this->additionalData)
-            ->sendMessage($deviceTokens);
+            ->sendMessage($deviceTokens, $configKey);
     }
 }
